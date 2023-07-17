@@ -11,16 +11,22 @@ def div(x, y):
         result = np.where(y == 0, x, np.where(np.isnan(x) | np.isnan(y), np.nan, x / y))
     return result
 
+
 def mpn(n):
     return int(np.ceil(n * .7))
 
+
+#######################################################
+# 点
 def abs(x):
     return np.abs(x)
+
 
 def power(x, a):
     x = np.clip(x, -10, 10)
     a = np.clip(a, -3, 3)
     return np.power(x, a)
+
 
 
 # 截面
@@ -35,6 +41,15 @@ def mad_wash_outliers(mat):
 def rank(x):
     return bn.nanrankdata(x, axis=1)
 
+
+# 时序
+def delay(A, n):
+    return np.concatenate([np.full(n, np.nan), A[:-n]])
+
+def delta(A, n):
+    return A - delay(A, n)
+
+
 def reg_beta(A, B, n):
     """Calculate rolling linear regression beta of A against B over window n"""
     A = pd.Series(A)
@@ -46,10 +61,12 @@ def reg_beta(A, B, n):
 
     betas = A.rolling(n).apply(lambda x: single_regression(x, B.loc[x.index]), raw=False)
     return betas.values
-    
+
+
 def ts_sum(x, n):
     assert n > 1
     return bn.move_sum(x.T, n, mpn(n)).T
+
 
 def ts_mean(x, n):
     assert n > 1
@@ -80,6 +97,7 @@ def ts_max(x, n):
 
 
 def ts_spearman(mat_x, mat_y):
+    """Calculate Spearman correlation between two matrix"""
     assert len(mat_x.shape) == len(mat_y.shape) == 2
     num_rows = mat_x.shape[0]
     spearman_values = []
