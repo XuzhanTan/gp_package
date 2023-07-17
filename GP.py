@@ -45,7 +45,6 @@ def power(x, a):
     a = np.clip(a, -3, 3)
     return np.power(x, a)
 
-# def delay(x, n):
 
 
 # 截面
@@ -62,6 +61,13 @@ def rank(x):
 
 
 # 时序
+def delay(A, n):
+    return np.concatenate([np.full(n, np.nan), A[:-n]])
+
+def delta(A, n):
+    return A - delay(A, n)
+
+
 def reg_beta(A, B, n):
     """Calculate rolling linear regression beta of A against B over window n"""
     A = pd.Series(A)
@@ -145,6 +151,8 @@ pset.addPrimitive(abs, [np.ndarray], np.ndarray, name='abs')
 pset.addPrimitive(power, [np.ndarray, int], np.ndarray, name='power')
 pset.addPrimitive(mad_wash_outliers, [np.ndarray], np.ndarray, name='mad_wash_outliers')
 pset.addPrimitive(rank, [np.ndarray], np.ndarray, name='rank')
+pset.addPrimitive(delay, [np.ndarray, int], np.ndarray, name='delay')
+pset.addPrimitive(delta, [np.ndarray, int], np.ndarray, name='delta')
 pset.addPrimitive(reg_beta, [np.ndarray, np.ndarray, int], np.ndarray, name='reg_beta')
 pset.addPrimitive(ts_sum, [np.ndarray, int], np.ndarray, name="ts_sum")
 pset.addPrimitive(ts_mean, [np.ndarray, int], np.ndarray, name='ts_mean')
