@@ -33,6 +33,18 @@ def mad_wash_outliers(mat):
 def rank(x):
     return bn.nanrankdata(x, axis=1)
 
+def reg_beta(A, B, n):
+    """Calculate rolling linear regression beta of A against B over window n"""
+    A = pd.Series(A)
+    B = pd.Series(B)
+
+    def single_regression(x, y):
+        slope, _ = np.polyfit(x, y, 1)
+        return slope
+
+    betas = A.rolling(n).apply(lambda x: single_regression(x, B.loc[x.index]), raw=False)
+    return betas.values
+    
 def ts_sum(x, n):
     assert n > 1
     return bn.move_sum(x.T, n, mpn(n)).T
