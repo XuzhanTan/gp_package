@@ -267,37 +267,40 @@ if __name__ == "__main__":
         print(halloffame[i])
         print("Fitness:", halloffame[i].fitness.values)
 
-    # 建立IC值最高的五个因子组合
-    creator.create("IndividualGA", list, fitness=creator.FitnessMax)
-    toolbox_GA = base.Toolbox()
-    N = len(halloffame)
-    toolbox_GA.register("individual", tools.initRepeat, creator.Individual, random.randrange, len(halloffame), n=5)
-    toolbox_GA.register("population", tools.initRepeat, list, toolbox.individual)
+    # # 建立IC值最高的五个因子组合
+    # creator.create("IndividualGA", list, fitness=creator.FitnessMax)
+    # toolbox_GA = base.Toolbox()
+    # N = len(halloffame)
+    # toolbox_GA.register("individual", tools.initRepeat, creator.Individual, random.randrange, len(halloffame), n=5)
+    # toolbox_GA.register("population", tools.initRepeat, list, toolbox.individual)
+    #
+    # def evaluate_GA(individual):
+    #     combined_alpha = sum(halloffame[i] for i in individual)
+    #     return calculate_ic(combined_alpha, future_returns),
+    #
+    # def evaluate_GA_population(population):
+    #     with Pool(2) as pool:
+    #         fitnesses = pool.map(toolbox_GA.evaluate, population)
+    #     return fitnesses
+    #
+    #
+    # toolbox_GA.register("evaluate_GA", evaluate_GA)
+    # toolbox_GA.register("evaluate_GA_population", evaluate_GA_population)
+    # toolbox_GA.register("select", tools.selTournament, tournsize=2)
+    # toolbox_GA.register("mate", tools.cxTwoPoint)
+    # toolbox_GA.register("mutate", tools.mutUniformInt, low=0, up=N - 1, indpb=0.2)
+    #
+    #
+    # pop = toolbox_GA.population(n=100)
+    # hof = tools.HallOfFame(1)
+    # pop, log = algorithms.eaSimple(pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=10, halloffame=hof, verbose=True)
+    # best_alpha = hof[0]
+    # print("The best combination is: ", best_alpha)
+    # print("The fitness value is: ", best_alpha.fitness.values)
 
-    def evaluate_GA(individual):
-        combined_alpha = sum(halloffame[i] for i in individual)
-        return calculate_ic(combined_alpha, future_returns),
-
-    def evaluate_GA_population(population):
-        with Pool(2) as pool:
-            fitnesses = pool.map(toolbox_GA.evaluate, population)
-        return fitnesses
 
 
-    toolbox_GA.register("evaluate_GA", evaluate_GA)
-    toolbox_GA.register("evaluate_GA_population", evaluate_GA_population)
-    toolbox_GA.register("select", tools.selTournament, tournsize=2)
-    toolbox_GA.register("mate", tools.cxTwoPoint)
-    toolbox_GA.register("mutate", tools.mutUniformInt, low=0, up=N - 1, indpb=0.2)
-
-
-    pop = toolbox_GA.population(n=100)
-    hof = tools.HallOfFame(1)
-    pop, log = algorithms.eaSimple(pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=10, halloffame=hof, verbose=True)
-    best_alpha = hof[0]
-    print("The best combination is: ", best_alpha)
-    print("The fitness value is: ", best_alpha.fitness.values)
-
+    # # 套娃
     # fit = evaluate_population(population)
     # for ind, fit in zip(population, fit):
     #     ind.fitness.values = fit
