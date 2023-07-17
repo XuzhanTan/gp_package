@@ -7,7 +7,9 @@ from .gp_definition import toolbox
 
 # Define new function
 def div(x, y):
-    return np.where(y == 0, x, x / y)
+    with np.errstate(divide='ignore', invalid='ignore'):
+        result = np.where(y == 0, x, np.where(np.isnan(x) | np.isnan(y), np.nan, x / y))
+    return result
 
 def mpn(n):
     return int(np.ceil(n * .7))
